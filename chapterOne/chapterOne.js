@@ -20,5 +20,22 @@ function uniquePain(string) {
       }
     }
   }
-  return true 
+  return true
+}
+
+//03 Replace all spaces in the string with %20
+function replaceSpaces(string, length) {
+  let array = string.split("")
+  let replacedArray = []
+
+  let i = 0
+  while (i < length) {
+    if (array[i] !== " ") {
+      replacedArray.push(array[i])
+    } else if (array[i] == " ") {
+      replacedArray.push("%20")
+    }
+  }
+
+  return replacedArray.join("")
 }

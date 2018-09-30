@@ -26,3 +26,21 @@ def unique_pain(string)
   end
   true
 end
+
+#03 Replace all spaces in the string with %20
+def replace_spaces(string, length)
+  replaced_string = ""
+  array = string.split("")
+
+  i = 0
+  while i < length
+    if array[i] != " "
+      replaced_string << array[i]
+    elsif array[i] == " "
+      replaced_string << "%20"
+    end
+  i += 1
+  end
+
+  replaced_string
+end
