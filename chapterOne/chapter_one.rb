@@ -44,3 +44,21 @@ def replace_spaces(string, length)
 
   replaced_string
 end
+
+#02 What's wrong with this problem
+def permutation(string)
+  return [string] if string.size < 2
+
+  chr    = string.chars.first
+  perms  = permutation(string[1..-1])
+
+  result = []
+
+  for perm in perms
+    for i in (0..perm.size)
+      result << (perm[0..i] + chr + perm[i..-1])
+    end
+  end
+
+  return result
+end
