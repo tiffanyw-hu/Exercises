@@ -27,6 +27,14 @@ def unique_pain(string)
   true
 end
 
+#02 Find if two strings are permutations of the other
+def permutation_strings(str1, str2)
+  return false if str1.length !==  str2.length
+  sorted_first = str1.sort
+  sorted_second = str2.sort
+  return true if sorted_first == sorted_second
+end
+
 #03 Replace all spaces in the string with %20
 def replace_spaces(string, length)
   replaced_string = ""
@@ -45,20 +53,63 @@ def replace_spaces(string, length)
   replaced_string
 end
 
-#02 What's wrong with this problem
-def permutation(string)
-  return [string] if string.size < 2
-
-  chr    = string.chars.first
-  perms  = permutation(string[1..-1])
-
-  result = []
-
-  for perm in perms
-    for i in (0..perm.size)
-      result << (perm[0..i] + chr + perm[i..-1])
+#04 Check if the string is a permutation of a palindrome
+def palindrome_permutation(str)
+  hash = {}
+  array = str.split("")
+  array.each do |el|
+    if hash[el]
+      hash[el] = hash[el] + 1
+    elsif el == " "
+    else
+      hash[el] = 1
     end
   end
 
-  return result
+  odd_counter = 0
+  even_counter = 0
+  values = hash.values
+  values.each do |el|
+    if (el % 2 == 0)
+      even_counter += 1
+    else
+      odd_counter += 1
+    end
+  end
+
+  if (odd_counter > 2)
+    return false
+  end
+  true
+end
+
+#05 check if two strings are one or zero edits away
+def one_away(str1, str2)
+  if str1.length > str2.length
+    longer = str1.length
+  else
+    longer = str2.length
+  end
+
+  different_counter = 0
+  i = 0
+  while i < longer
+    if !str1[i]
+      str1[i] = " "
+    end
+
+    if !str2[i]
+      str2[i] = " "
+    end
+
+    if str1[0] != str2[0]
+      different_counter += 1
+      if different_counter > 1
+        return false
+      end
+    end
+    i += 1
+  end
+
+  true
 end

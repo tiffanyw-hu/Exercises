@@ -23,6 +23,18 @@ function uniquePain(string) {
   return true
 }
 
+//02 Find if two strings are permutations of the other
+function permutationStrings(str1, str2) {
+  if (str1.length !== str2.length) { return false }
+  sortedFirst = str1.split("").sort().join("")
+  sortedSecond = str2.split("").sort().join("")
+  if (sortedFirst === sortedSecond) {
+    return true
+  } else {
+    return false
+  }
+}
+
 //03 Replace all spaces in the string with %20
 function replaceSpaces(string, length) {
   let array = string.split("")
@@ -36,6 +48,36 @@ function replaceSpaces(string, length) {
       replacedArray.push("%20")
     }
   }
-
   return replacedArray.join("")
+}
+
+//04 Check if the string is a permutation of a palindrome
+function palindromePermutation(string) {
+  let hash = {}
+  let array = str.split("")
+  array.forEach((el) => {
+    if (hash[el]) {
+      hash[el] = hash[el] + 1
+    } else if (el == " ") {
+    } else {
+      hash[el] = 1
+    }
+  })
+
+  let oddCounter = 0
+  let evenCounter = 0
+  let values = Object.values(hash)
+  values.forEach((el) => {
+    if (el % 2 == 0) {
+      evenCounter++
+    } else {
+      oddCounter++
+    }
+  })
+
+  if (oddCounter > 2) {
+    return false
+  } else {
+    return true 
+  }
 }
