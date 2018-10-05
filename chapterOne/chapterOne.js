@@ -78,6 +78,10 @@ function palindromePermutation(string) {
   if (oddCounter > 2) {
     return false
   } else {
-    return true 
+    return true
   }
+}
+
+function oneAway(str1, str2) {
+
 }

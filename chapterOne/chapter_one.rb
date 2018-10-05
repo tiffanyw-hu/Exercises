@@ -113,3 +113,37 @@ def one_away(str1, str2)
 
   true
 end
+
+def compression(str)
+  array = str.split("")
+  result_array = [array.first]
+  array << "/"
+
+  p array
+
+  counter = 1
+  i = 1
+  while i < array.length
+    if (array[i-1] == array[i])
+      counter += 1
+    end
+
+    if (array[i-1] != array[i])
+      result_array << counter
+      result_array << array[i]
+      counter = 1
+    end
+
+  i += 1
+  end
+
+  result_array.pop
+
+  result = result_array.join("")
+  if result.length < str.length
+    return str
+  else
+    return result
+  end
+  
+end
