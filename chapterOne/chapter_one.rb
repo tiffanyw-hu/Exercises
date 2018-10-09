@@ -145,5 +145,7 @@ def compression(str)
   else
     return result
   end
-  
+
 end
+
+#rotating matrix like why no 
