@@ -119,8 +119,6 @@ def compression(str)
   result_array = [array.first]
   array << "/"
 
-  p array
-
   counter = 1
   i = 1
   while i < array.length
@@ -148,4 +146,4 @@ def compression(str)
 
 end
 
-#rotating matrix like why no 
+#rotating matrix like why no
