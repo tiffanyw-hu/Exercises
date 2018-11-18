@@ -88,3 +88,5 @@ function oneAway(str1, str2) {
   //im not sure
   //whoa like check which one you wanted maybe refactor some of this code y'all
 }
+
+//pairboarding problems should go here look at ctci for once guys

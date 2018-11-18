@@ -27,6 +27,7 @@ def unique_pain(string)
   true
 end
 
+
 #02 Find if two strings are permutations of the other
 def permutation_strings(str1, str2)
   return false if str1.length !==  str2.length
