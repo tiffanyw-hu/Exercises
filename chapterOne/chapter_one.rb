@@ -151,4 +151,4 @@ def compression(str)
 
 end
 
-#rotating matrix like why no
+#study rotations
