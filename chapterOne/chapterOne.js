@@ -85,6 +85,33 @@ function palindromePermutation(string) {
 //05 check if two strings are one or zero edits away
 //check
 function oneAway(str1, str2) {
+  let hash = {}
+  let array = str.split("")
+  array.forEach((el) => {
+    if (hash[el]) {
+      hash[el] = hash[el] + 1
+    } else if (el == " ") {
+    } else {
+      hash[el] = 1
+    }
+  })
+
+  let oddCounter = 0
+  let evenCounter = 0
+  let values = Object.values(hash)
+  values.forEach((el) => {
+    if (el % 2 == 0) {
+      evenCounter++
+    } else {
+      oddCounter++
+    }
+  })
+
+  if (oddCounter > 2) {
+    return false
+  } else {
+    return true
+  }
   //im not sure
   //whoa like check which one you wanted maybe refactor some of this code y'all
 }
