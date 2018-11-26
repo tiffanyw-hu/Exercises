@@ -152,3 +152,4 @@ def compression(str)
 end
 
 #study rotations
+#weaknesses is matrix
