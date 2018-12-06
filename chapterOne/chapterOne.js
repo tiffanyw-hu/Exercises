@@ -116,4 +116,9 @@ function oneAway(str1, str2) {
   //whoa like check which one you wanted maybe refactor some of this code y'all
 }
 
+function substringIndex(str1, str2) {
+  
+}
+
+//substrIndex("Francisco", "San Francisco")
 //pairboarding problems should go here look at ctci for once guys
