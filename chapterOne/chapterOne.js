@@ -155,6 +155,3 @@ function endsWith(str1) {
 
 //substrIndex("Francisco", "San Francisco")
 //pairboarding problems should go here look at ctci for once guys
-
-//no one knows what they're doing you don't know what you're doing
-//stfu i hate you 
