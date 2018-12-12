@@ -116,9 +116,45 @@ function oneAway(str1, str2) {
   //whoa like check which one you wanted maybe refactor some of this code y'all
 }
 
-function substringIndex(str1, str2) {
-  
+function substrIndex(str1, str2) {
+  let arr = str2.split(" ")
+  counter = 0
+  if (!arr.includes(str1)) {
+    return -1
+  } else {
+    for (let i = 0; i < arr.length; i++) {
+      if (arr[i] !== str1) {
+        counter += arr[i].length + 1
+      } else {
+        return counter + 1
+      }
+    }
+  }
+}
+
+function capitalize(str) {
+  let strArr = str.split("")
+  strArr[0] = strArr[0].toUpperCase()
+  for (let i = 1; i < strArr.length; i++) {
+    if (strArr[i] === " ") {
+      strArr[i+1] = strArr[i+1].toUpperCase()
+    }
+  }
+  return strArr.join("")
+}
+
+function endsWith(str1) {
+  let strArr = str1.split(",")
+  let subArr = strArr[0].split(" ")
+  console.log(strArr)
+  if (subArr[subArr.length - 1] === strArr[1]) {
+    return true
+  }
+  return false
 }
 
 //substrIndex("Francisco", "San Francisco")
 //pairboarding problems should go here look at ctci for once guys
+
+//no one knows what they're doing you don't know what you're doing
+//stfu i hate you 
