@@ -72,3 +72,80 @@ For (let i = 0; i < grid.length; i++) {
 }
 Return counter
 }
+
+class Vertex {
+	constructor(value) {
+		this.value = value
+		this.inEdges = []
+		this.outEdges = []
+	}
+}
+
+class Edge {
+	constructor(cost = 1) {
+		this.fromVertex = fromVertex
+		this.toVertex = toVertex
+		this.cost = cost
+	}
+}
+
+class Graph {
+	constructor(nodes, edges) {
+		this.nodes = []
+		this.edges = []
+	}
+
+	function add(value) {
+		new_node = new Vertex(value)
+		this.nodes.push(new_node)
+		new_node
+	}
+
+	function connect(from_node, to_node) {
+		new_edge = new Edge(from_node, to_node, cost)
+		this.nodes.push(new_edge)
+		this.nodes
+	}
+
+	function stronglyConnected() {
+		if (!allNodesAccessible()) {
+			return false
+		}
+		reverse_edges()
+		if (!allNodesAccessible()) {
+			return false
+		}
+		reverse_edges()
+		return true
+	}
+
+	function allNodesAccessible() {
+		let visited = new Set()
+		dfs(this.nodes[0], visited)
+		visited.length == this.nodes.length
+	}
+
+	function dfs(node, visited) {
+		visited.add(node)
+
+		node.out_edges.forEach(edge => {
+			let next_node = edge.to_vertex
+			if (visited.include(next_node)) {
+				break
+			} else {
+				dfs(next_node, visited)
+			}
+		})
+	}
+
+	function reverse_edges() {
+		this.edges.forEach(edge => {
+			edge.from_vertex, edge.to_vertex = edge.to_vertex, edge.from_vertex
+		})
+
+		this.nodes.forEach(node => {
+			node.in_edges, node.out_edges = node.out_edges, node.in_edges
+		})
+	}
+
+}
