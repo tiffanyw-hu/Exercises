@@ -73,79 +73,86 @@ For (let i = 0; i < grid.length; i++) {
 Return counter
 }
 
+//determine whether or not a graph is strongly connected
+//any point you start at you can eventually hit every node
+//graph -> vertices & edges
+//search to see if we hit every vertex & reverse
+//strongly connected?
+
 class Vertex {
 	constructor(value) {
-		this.value = value
-		this.inEdges = []
-		this.outEdges = []
-	}
+    this.value = value
+    this.inEdges = []
+    this.outEdges = []
+  }
 }
 
 class Edge {
-	constructor(cost = 1) {
-		this.fromVertex = fromVertex
-		this.toVertex = toVertex
-		this.cost = cost
-	}
+  constructor(toVertex, fromVertex) {
+	  this.toVertex = toVertex
+  	this.fromVertex = fromVertex
+    toVertex.inEdges.push(this)
+    fromVertex.outEdges.push(this)
+  }
 }
 
 class Graph {
-	constructor(nodes, edges) {
-		this.nodes = []
-		this.edges = []
-	}
+  constructor(vetices, edges) {
+    this.vertices = []
+    this.edges = []
+    let visited = []
+  }
 
-	function add(value) {
-		new_node = new Vertex(value)
-		this.nodes.push(new_node)
-		new_node
-	}
+  //search
+  	//go through each vertex & if you don't go through all of them then it's not strongly connected
+  	//compare the lengths of visited nodes & the length of graph?
+  	//push visited nodes into visited & once the search is done you compare vertices.length
+  function dfs(root, visited) {
+    //go all the way to the end
+    visited.push(root)
 
-	function connect(from_node, to_node) {
-		new_edge = new Edge(from_node, to_node, cost)
-		this.nodes.push(new_edge)
-		this.nodes
-	}
+    root.outEdges.forEach(edge => {
+      let nextNode = edge.toVertex
+      if (visited.includes(nextNode)) {
+        break
+      } else {
+       dfs(nextNode, visited)
+      }
+    })
+  }
 
-	function stronglyConnected() {
-		if (!allNodesAccessible()) {
-			return false
-		}
-		reverse_edges()
-		if (!allNodesAccessible()) {
-			return false
-		}
-		reverse_edges()
-		return true
-	}
+  function connection(visited) {
+    if (visited.length === this.vertices.length) {
+      return true
+    }
+    return false
+  }
 
-	function allNodesAccessible() {
-		let visited = new Set()
-		dfs(this.nodes[0], visited)
-		visited.length == this.nodes.length
-	}
+	function reverse(root, visited) {
+    visited.push(root)
 
-	function dfs(node, visited) {
-		visited.add(node)
+    root.inEdges.forEach(edge => {
+      let nextNode = edge.fromVertex
+      if (visited.includes(nextNode)) {
+        break
+      } else {
+       dfs(nextNode, visited)
+      }
+    })
+  }
 
-		node.out_edges.forEach(edge => {
-			let next_node = edge.to_vertex
-			if (visited.include(next_node)) {
-				break
-			} else {
-				dfs(next_node, visited)
-			}
-		})
-	}
+  function runThis(visited, root) {
+    dfs(root, visited)
+    if (!connection(visited)) {
+      return false
+    }
+    visited = []
+    reverse(root, visited)
+		if (!connection(visited)) {
+      return false
+    }
+    return true
+  }
 
-	function reverse_edges() {
-		this.edges.forEach(edge => {
-			edge.from_vertex, edge.to_vertex = edge.to_vertex, edge.from_vertex
-		})
-
-		this.nodes.forEach(node => {
-			node.in_edges, node.out_edges = node.out_edges, node.in_edges
-		})
-	}
 
 }
