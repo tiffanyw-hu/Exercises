@@ -156,3 +156,53 @@ class Graph {
 
 
 }
+
+
+//merge sort
+
+function mergeSort(arr) {
+	if (arr.length < 2) {
+		return arr
+	}
+
+	let mid = arr.length / 2
+	let left = arr.slice(0...mid)
+	let right = arr.slice(mid...arr.length)
+	let sortLeft = mergeSort(left)
+	let sortRight = mergeSort(right)
+
+	merge(sortLeft, sortRight)
+}
+
+function merge(left, right) {
+	let mergedArr = [];
+
+	while ((left.length > 1) || (right.length > 1)) {
+		mergedArr.push(
+			((left[0] > right[0]) ? (right.shift) : (left.shift))
+		)
+	}
+	let resultArr = mergedArr.concat(left).concat(right)
+	return resultArr
+}
+
+function largestDiff(arr) {
+	let currentMin = arr[0]
+	let difference = 0
+	for (let i = 1; i < arr.length; i++) {
+		if ((arr[i] > currentMin) && ((arr[i] - currentMin) > difference)) {
+			difference = arr[i] - currentMin
+		} else if (arr[i] <= currentMin) {
+			currentMin = arr[i]
+		}
+	}
+
+	if (difference <= 0)
+	 {
+		 return -1
+	 }
+
+	 return difference
+}
+
+//you
