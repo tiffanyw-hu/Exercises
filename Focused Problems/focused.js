@@ -185,6 +185,3 @@ function merge(left, right) {
 	let resultArr = mergedArr.concat(left).concat(right)
 	return resultArr
 }
-//dyanimic programming
-
-//you
