@@ -185,24 +185,3 @@ function merge(left, right) {
 	let resultArr = mergedArr.concat(left).concat(right)
 	return resultArr
 }
-
-function largestDiff(arr) {
-	let currentMin = arr[0]
-	let difference = 0
-	for (let i = 1; i < arr.length; i++) {
-		if ((arr[i] > currentMin) && ((arr[i] - currentMin) > difference)) {
-			difference = arr[i] - currentMin
-		} else if (arr[i] <= currentMin) {
-			currentMin = arr[i]
-		}
-	}
-
-	if (difference <= 0)
-	 {
-		 return -1
-	 }
-
-	 return difference
-}
-
-//you
