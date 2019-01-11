@@ -186,95 +186,348 @@ function merge(left, right) {
 	return resultArr
 }
 
-const isMinHeap = (heapArr, idx = 0) => {
-  // if idx is a leaf node return true as every leaf node is a heap
-  if (2 * idx + 2 > heapArr.length) return true;
+class MinHeap {
+  /**
+   * @param {Function} [comparatorFunction]
+   */
+  constructor(comparatorFunction) {
+    // Array representation of the heap.
+    this.heapContainer = [];
+    this.compare = new Comparator(comparatorFunction);
+    this.length = 0;
+  }
 
-  // otherwise we know idx is an internal node
-  // recursively check if left child is a heap
-  let left = heapArr[idx] <= heapArr[2 * idx + 1] && isMinHeap(heapArr, 2 * idx + 1);
+  /**
+   * @param {number} parentIndex
+   * @return {number}
+   */
+  getLeftChildIndex(parentIndex) {
+    return (2 * parentIndex) + 1;
+  }
 
-  // recursively check if right child is a heap (to avoid array out of bounds we first check if a right child exists or not)
-  let right = (2 * idx + 2 === heapArr.length) ||
-    heapArr[idx] <= heapArr[2 * idx + 2] && isMinHeap(heapArr, 2 * idx + 2);
+  /**
+   * @param {number} parentIndex
+   * @return {number}
+   */
+  getRightChildIndex(parentIndex) {
+    return (2 * parentIndex) + 2;
+  }
 
-  // return true if both left and right children are heaps
-  return left && right;
+  /**
+   * @param {number} childIndex
+   * @return {number}
+   */
+  getParentIndex(childIndex) {
+    return Math.floor((childIndex - 1) / 2);
+  }
+
+  /**
+   * @param {number} childIndex
+   * @return {boolean}
+   */
+  hasParent(childIndex) {
+    return this.getParentIndex(childIndex) >= 0;
+  }
+
+  /**
+   * @param {number} parentIndex
+   * @return {boolean}
+   */
+  hasLeftChild(parentIndex) {
+    return this.getLeftChildIndex(parentIndex) < this.heapContainer.length;
+  }
+
+  /**
+   * @param {number} parentIndex
+   * @return {boolean}
+   */
+  hasRightChild(parentIndex) {
+    return this.getRightChildIndex(parentIndex) < this.heapContainer.length;
+  }
+
+  /**
+   * @param {number} parentIndex
+   * @return {*}
+   */
+  leftChild(parentIndex) {
+    return this.heapContainer[this.getLeftChildIndex(parentIndex)];
+  }
+
+  /**
+   * @param {number} parentIndex
+   * @return {*}
+   */
+  rightChild(parentIndex) {
+    return this.heapContainer[this.getRightChildIndex(parentIndex)];
+  }
+
+  /**
+   * @param {number} childIndex
+   * @return {*}
+   */
+  parent(childIndex) {
+    return this.heapContainer[this.getParentIndex(childIndex)];
+  }
+
+  /**
+   * @param {number} indexOne
+   * @param {number} indexTwo
+   */
+  swap(indexOne, indexTwo) {
+    const tmp = this.heapContainer[indexTwo];
+    this.heapContainer[indexTwo] = this.heapContainer[indexOne];
+    this.heapContainer[indexOne] = tmp;
+  }
+
+  /**
+   * @return {*}
+   */
+  peek() {
+    if (this.heapContainer.length === 0) {
+      return null;
+    }
+
+    return this.heapContainer[0];
+  }
+
+  /**
+   * @return {*}
+   */
+  poll() {
+    if (this.heapContainer.length === 0) {
+      return null;
+    }
+
+    if (this.heapContainer.length === 1) {
+      this.length -= 1;
+      return this.heapContainer.pop();
+    }
+
+    const item = this.heapContainer[0];
+
+    // Move the last element from the end to the head.
+    this.heapContainer[0] = this.heapContainer.pop();
+    this.heapifyDown();
+    this.length -= 1;
+    return item;
+  }
+
+  /**
+   * @param {*} item
+   * @return {MinHeap}
+   */
+  add(item) {
+    this.heapContainer.push(item);
+    this.heapifyUp();
+    this.length += 1;
+    return this;
+  }
+
+  /**
+   * @param {*} item
+   * @param {Comparator} [customFindingComparator]
+   * @return {MinHeap}
+   */
+  remove(item, customFindingComparator) {
+    // Find number of items to remove.
+    const customComparator = customFindingComparator || this.compare;
+    const numberOfItemsToRemove = this.find(item, customComparator).length;
+
+    for (let iteration = 0; iteration < numberOfItemsToRemove; iteration += 1) {
+      // We need to find item index to remove each time after removal since
+      // indices are being change after each heapify process.
+      const indexToRemove = this.find(item, customComparator).pop();
+
+      // If we need to remove last child in the heap then just remove it.
+      // There is no need to heapify the heap afterwards.
+      if (indexToRemove === (this.heapContainer.length - 1)) {
+        this.heapContainer.pop();
+      } else {
+        // Move last element in heap to the vacant (removed) position.
+        this.heapContainer[indexToRemove] = this.heapContainer.pop();
+
+        // Get parent.
+        const parentItem = this.hasParent(indexToRemove) ? this.parent(indexToRemove) : null;
+        const leftChild = this.hasLeftChild(indexToRemove) ? this.leftChild(indexToRemove) : null;
+
+        // If there is no parent or parent is less then node to delete then heapify down.
+        // Otherwise heapify up.
+        if (
+          leftChild !== null
+          && (
+            parentItem === null
+            || this.compare.lessThan(parentItem, this.heapContainer[indexToRemove])
+          )
+        ) {
+          this.heapifyDown(indexToRemove);
+        } else {
+          this.heapifyUp(indexToRemove);
+        }
+      }
+    }
+    this.length -= 1;
+    return this;
+  }
+
+  /**
+   * @param {*} item
+   * @param {Comparator} [customComparator]
+   * @return {Number[]}
+   */
+  find(item, customComparator) {
+    const foundItemIndices = [];
+    const comparator = customComparator || this.compare;
+
+    for (let itemIndex = 0; itemIndex < this.length; itemIndex += 1) {
+      if (comparator.equal(item, this.heapContainer[itemIndex])) {
+        foundItemIndices.push(itemIndex);
+      }
+    }
+
+    return foundItemIndices;
+  }
+
+  /**
+   * @param {number} [customStartIndex]
+   */
+  heapifyUp(customStartIndex) {
+    // Take last element (last in array or the bottom left in a tree) in
+    // a heap container and lift him up until we find the parent element
+    // that is less then the current new one.
+    let currentIndex = customStartIndex || this.heapContainer.length - 1;
+
+    while (
+      this.hasParent(currentIndex)
+      && this.compare.lessThan(this.heapContainer[currentIndex], this.parent(currentIndex))
+    ) {
+      this.swap(currentIndex, this.getParentIndex(currentIndex));
+      currentIndex = this.getParentIndex(currentIndex);
+    }
+  }
+
+  /**
+   * @param {number} [customStartIndex]
+   */
+  heapifyDown(customStartIndex) {
+    // Compare the root element to its children and swap root with the smallest
+    // of children. Do the same for next children after swap.
+    let currentIndex = customStartIndex || 0;
+    let nextIndex = null;
+
+    while (this.hasLeftChild(currentIndex)) {
+      if (
+        this.hasRightChild(currentIndex)
+        && this.compare.lessThan(this.rightChild(currentIndex), this.leftChild(currentIndex))
+      ) {
+        nextIndex = this.getRightChildIndex(currentIndex);
+      } else {
+        nextIndex = this.getLeftChildIndex(currentIndex);
+      }
+
+      if (this.compare.lessThan(this.heapContainer[currentIndex], this.heapContainer[nextIndex])) {
+        break;
+      }
+
+      this.swap(currentIndex, nextIndex);
+      currentIndex = nextIndex;
+    }
+  }
+
+  /**
+   * @return {boolean}
+   */
+  isEmpty() {
+    return !this.heapContainer.length;
+  }
+
+  /**
+   * @return {string}
+   */
+  toString() {
+    return this.heapContainer.toString();
+  }
 }
 
-let heapA = [2,3,2,11,4,7,4]
-let heapB = [2,3,1,11,4,7,4]
-
-isMinHeap(heapA) // true
-isMinHeap(heapB) // fals
-
-// data structure for Min Heap
-class ConvertHeap {
-    // return left child of arr[i]
-    left (i) {
-        return (2 * i + 1);
+// helper class for keeping track of a character's count and index
+class Pair {
+    constructor(count, index) {
+        this.count = count;
+        this.index = index;
     }
 
-    // return right child of arr[i]
-    right(i) {
-        return (2 * i + 2);
+    getCount() {
+        return this.count;
     }
 
-    // Utility function to swap two indices in the array
-    swap(arr, i, j) {
-        let temp = arr[i];
-        arr[i] = arr[j];
-        arr[j] = temp;
+    getIndex() {
+        return this.index;
     }
 
-    // recursive heapifyDown algorithm. The node at index i and
-    // its two direct children violate the heap property
-    heapifyDown(arr, i, size) {
-        // get left and right child of node at index i
-        let left = this.left(i);
-        let right = this.right(i);
-
-        let smallest = i;
-
-        // compare arr[i] with its left and right child
-        // and find smallest value
-        if (left < size && arr[left] < arr[i]) {
-            smallest = left;
-        }
-
-        if (right < size && arr[right] < arr[smallest]) {
-            smallest = right;
-        }
-
-        // swap with child having lesser value and
-        // call heapify-down on the child
-        if (smallest !== i) {
-            this.swap(arr, i, smallest);
-            this.heapifyDown(arr, smallest, size);
-        }
+    setCount(count) {
+        this.count = count;
     }
 
-    // build heap
-    convert(arr) {
-        // call heapifyDown starting from last internal node all the
-        // way upto the root node
-        let i = Math.floor((arr.length - 2) / 2);
-        while (i >= 0) {
-            this.heapifyDown(arr, i--, arr.length);
-        }
-        return arr;
+    setIndex(index) {
+        this.index = index;
     }
-
 }
-/*
-            9
 
-      4         7
+// Function to find the first k non-repeating character in
+// the string by doing only one traversal of it
+const firstKNonRepeating = (str, k) => {
+    // map to store character count and the index of its
+    // last occurrence in the string
+    let map = {};
 
-    1   -2   6      5
+    for (let i = 0 ; i < str.length; i++)
+    {
+        if (map[str.charAt(i)] === undefined) {
+            map[str.charAt(i)] = new Pair(1, i);
+        }
+        else {
+            let pair = map[str.charAt(i)];
+            pair.setCount(pair.getCount() + 1);
+            pair.setIndex(i);
+        }
+    }
 
-*/
-// array representing max heap
-let arr = [ 9, 4, 7, 1, -2, 6, 5 ];
+    // create an empty max-heap (max size k)
+    let comparator = new Comparator;
+    let pq = new MinHeap(comparator.reverse());
 
-// build a min heap by initializing it by given array
+    // traverse the map and process index of all characters
+    // having count of 1
+    for (let key in map) {
+        let count = map[key].getCount();
+        let index = map[key].getIndex();
+
+        if (count == 1) {
+            // if heap has less than k keys in it
+            // push index of current character
+            if (--k >= 0) {
+                pq.add(index);
+            }
+            // else if index of current element is less than the root
+            // of the heap, replace the root with the current element
+            else if (index < pq.peek()) {
+                pq.poll();
+                pq.add(index);
+            }
+        }
+    }
+
+    // Now the heap contains index of count k non-repeating characters
+
+    // pop all keys from the max-heap
+    while (pq.length > 0) {
+        // extract the maximum node from the max-heap
+        let max_index = pq.poll();
+        console.log(str.charAt(max_index) + " ");
+    }
+}
+
+
+let str = "ABCDBAGHCHFAC";
+let k = 3;
+
+firstKNonRepeating(str, k); // => D G F
