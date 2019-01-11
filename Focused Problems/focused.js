@@ -525,9 +525,3 @@ const firstKNonRepeating = (str, k) => {
         console.log(str.charAt(max_index) + " ");
     }
 }
-
-
-let str = "ABCDBAGHCHFAC";
-let k = 3;
-
-firstKNonRepeating(str, k); // => D G F
