@@ -206,4 +206,75 @@ let heapA = [2,3,2,11,4,7,4]
 let heapB = [2,3,1,11,4,7,4]
 
 isMinHeap(heapA) // true
-isMinHeap(heapB) // false
+isMinHeap(heapB) // fals
+
+// data structure for Min Heap
+class ConvertHeap {
+    // return left child of arr[i]
+    left (i) {
+        return (2 * i + 1);
+    }
+
+    // return right child of arr[i]
+    right(i) {
+        return (2 * i + 2);
+    }
+
+    // Utility function to swap two indices in the array
+    swap(arr, i, j) {
+        let temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
+
+    // recursive heapifyDown algorithm. The node at index i and
+    // its two direct children violate the heap property
+    heapifyDown(arr, i, size) {
+        // get left and right child of node at index i
+        let left = this.left(i);
+        let right = this.right(i);
+
+        let smallest = i;
+
+        // compare arr[i] with its left and right child
+        // and find smallest value
+        if (left < size && arr[left] < arr[i]) {
+            smallest = left;
+        }
+
+        if (right < size && arr[right] < arr[smallest]) {
+            smallest = right;
+        }
+
+        // swap with child having lesser value and
+        // call heapify-down on the child
+        if (smallest !== i) {
+            this.swap(arr, i, smallest);
+            this.heapifyDown(arr, smallest, size);
+        }
+    }
+
+    // build heap
+    convert(arr) {
+        // call heapifyDown starting from last internal node all the
+        // way upto the root node
+        let i = Math.floor((arr.length - 2) / 2);
+        while (i >= 0) {
+            this.heapifyDown(arr, i--, arr.length);
+        }
+        return arr;
+    }
+
+}
+/*
+            9
+
+      4         7
+
+    1   -2   6      5
+
+*/
+// array representing max heap
+let arr = [ 9, 4, 7, 1, -2, 6, 5 ];
+
+// build a min heap by initializing it by given array
