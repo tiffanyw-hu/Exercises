@@ -185,3 +185,25 @@ function merge(left, right) {
 	let resultArr = mergedArr.concat(left).concat(right)
 	return resultArr
 }
+
+const isMinHeap = (heapArr, idx = 0) => {
+  // if idx is a leaf node return true as every leaf node is a heap
+  if (2 * idx + 2 > heapArr.length) return true;
+
+  // otherwise we know idx is an internal node
+  // recursively check if left child is a heap
+  let left = heapArr[idx] <= heapArr[2 * idx + 1] && isMinHeap(heapArr, 2 * idx + 1);
+
+  // recursively check if right child is a heap (to avoid array out of bounds we first check if a right child exists or not)
+  let right = (2 * idx + 2 === heapArr.length) ||
+    heapArr[idx] <= heapArr[2 * idx + 2] && isMinHeap(heapArr, 2 * idx + 2);
+
+  // return true if both left and right children are heaps
+  return left && right;
+}
+
+let heapA = [2,3,2,11,4,7,4]
+let heapB = [2,3,1,11,4,7,4]
+
+isMinHeap(heapA) // true
+isMinHeap(heapB) // false
