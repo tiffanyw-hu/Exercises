@@ -203,3 +203,137 @@ const nodeCount = (root) => {
     }
     return 1 + nodeCount(root.left) + nodeCount(root.right);
 }
+
+
+
+// find key
+// if key is > root then check root.right if still larger keep going right
+// if key is < root then check left keep going left
+
+// how do i call the node thats the parent without using node.parent
+// check down three layers
+// check root if larger or less than then go appropriate branch
+// then check currentNOde if target return root,
+// check less then or greater than go down appropriate side
+// if target check if less than or greater than parentNode || root
+// if node === null then return -1;
+// if node === key then return node.right
+// if
+
+//            28
+//         /      \
+//      15          40
+//     /    \      /   \
+//   10      20   33 .  45
+//  /  \     / \   / \    / \
+// 8   12  16   25 29 37 43 . 49
+
+function firstOrderSuc(node, key){
+  if (node === key && node.right === null){
+    return -1;
+  }
+  if (node === key){
+    return node.right
+  }
+  //check for left side
+  let currentNode = node
+  let parentNode;
+  if (key < currentNode){
+    currentNode = currentNode.left
+    // left side recursive check to grandparents
+    if (currentNode === key){
+      return node;
+    } else {
+      if (key < currentNode){
+        parentNode = currentNode
+        currentNode = parentNode.left
+        if currentNode === key {
+          return parentNode
+        } else {
+          firstOrderSuc(currentNode, key)
+        }
+      } else{
+        parentNode = currentNode
+        currentNode = parentNode.right
+        if currentNode === key {
+          return node
+        } else {
+          firstOrderSuc(currentNode, key)
+        }
+      }
+    }
+  } else {
+    // right side recursive check
+    firstOrderSuc(node.right, key)
+  }
+}
+
+//haschildren helper function -> returns children [child1, child2]
+//root doesn't have children (array is empty) then just return true
+
+//check is a helper function cos im lazy(children)
+//if yes then we need to do a check
+//compare child on left is less than && right is greater than or equal to
+//return false if fail this test
+//hasChildren => children?
+//we need to keep doing that until we don't have any children?
+//base case => return true if we don't have any children
+
+//main function -> checks for children -> checks if the children passes the test -> return true
+
+//recursion?
+//i don't like recursion
+
+function isBST(root) {
+  let children = hasChildren(root)
+
+  let keys = Object.keys(children)
+  let values = Object.values(children)
+
+  if (Object.keys(children).length === 0) {
+    return root
+  }
+
+  if (check(children, root) === false) {
+    return false
+  } else {
+    for (let i = 0; i < keys.length; i++) {
+      isBST(values[i])
+
+    }
+  }
+}
+
+function hasChildren(root) {
+  let spawns = {}
+  if (root.left) {
+    spawns[left] = root.left
+  } else if (root.right) {
+    spawns[right] = root.right
+  }
+  return spawnArray
+}
+
+function check(children, root) {
+  //children is an object
+  //left, right, or both
+  //maybe check if it exists? later
+  if (children[left] && children[right]) {
+    if (children[left] < root && children[right] >= root) {
+      //children of left & right
+      return true
+    }
+  } else if (children[right] === undefined && children[left]) {
+    	if (children[left] >= root) {
+      	return false
+    	}
+  	else if (children[left] === undefined && children[right]) {
+      if (children[right] < root) {
+        return false
+      }
+    }
+  }
+	return true
+}
+
+//lets me know if the children pass the BST rule
