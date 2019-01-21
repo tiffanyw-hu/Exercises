@@ -1,0 +1,89 @@
+.hello {
+  background-color: yellow;
+}
+
+.header-container {
+  width: 100%;
+  height: 10%;
+  border-bottom: 1px solid #F0F0F0;
+  display: flex;
+  background-color: #F5F5F5;
+  margin: 0 auto;
+}
+
+.header-container p {
+  text-align: center;
+  font-size: 10px;
+  padding: 10px 5px 11px 4px;
+  margin: 1% 13% 0% 1%;
+  width: 50%;
+}
+
+.register-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 25%;
+  margin-left: auto;
+  margin-right: 0;
+  padding: 0px 10px 0px 10px;
+}
+
+.register-container img {
+  width: 25px;
+  height: 21px;
+  opacity: 0.6;
+  padding: 10px 10px 10px 10px;
+  margin: 5% 10% 5% 10%;
+}
+
+.register-container p {
+  padding: 6px 20px;
+  background-color: red;
+  border-radius: 2px;
+  color: white;
+}
+
+.logo-first {
+  /* width: 17%; */
+  margin: 5% 0.5% 5% 15%;
+  width: 33%;
+  background-image: url('./VisionSpeakers/images/icons/veritas-vision.png');
+  background-size: 134px;
+  height: 22%;
+  padding: 5px 0px 5px 0px;
+  opacity: 0.75;
+  background-repeat: no-repeat;
+}
+
+.logo-second {
+  width: 33%;
+  background-image: url('./VisionSpeakers/images/icons/veritas-vision.png');
+  margin: 6% 13% 6% -5.5%;
+  background-repeat: no-repeat;
+  background-size: 52px;
+  background-position: 0px -9px;
+  height: 29%;
+  padding: 4px 5px 0px 4px;
+  /* background-size: 47px;
+  background-repeat: no-repeat;
+  background-position: 5px -5px;
+  height: 20px;
+  margin: 16px 0px 17px -13px;
+  opacity: 0.85; */
+}
+
+.logo-container {
+  width: 50%;
+  /* background-color: blue; */
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+span {
+  background-color: #88adba;
+  color: white;
+
+  /* margin: 0% 0% 0% 30%; */
+}
